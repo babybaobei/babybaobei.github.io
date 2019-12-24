@@ -1,385 +1,1720 @@
-<?php
-/*
- * 请勿使用windows下的记事本修改本文件。推荐使用 notepad++
- *  *  版本v2.6
- *  1.自动选择最优服务api地址返回数据
- *  2.请求时添加压缩返回
- *  * 版本v2.5
- *  1.500页面优化
- *  2.数据请求增加重试,减少请求失败
- * 版本v2.4
- * 新增加cdn节点检测
- *  版本 v2.3
- *  1.500页面展示
- * 版本 v2.2
- * 1.增加mbstring检测
- * *版本 v2.1
- * 1.增加cache检测
- * 2.增加显示debug信息限制
- * 版本 v2.0
- * 1.documentUrl 做兼容解决部分用户二级目录报错
- * 2.增加debug信息方便为用户定位错误
- *
- * 版本 v1.1.0
- * 升级日志：
- * 1、添加自动更新
- * 2、修正缓存的BUG
- * 3、添加自动清理cache
- * 4、实现http code的转发
- *
- * 版本 v1.0.1
- * 升级日志：
- * 1、修正第一次无法打开，需要刷新才能打开的BUG
- * 2、添加对二级目录的支持
- * 3、添加对非index.php文件名的支持。
- *
- * */
-$appId = '892448';  // 站点的APPID （请勿修改和泄漏）
-$appKey = 'E9DB01F556347C7D88130C480F50F5A0';// 站点的APP KEY（请勿修改和泄漏）
-
-$proxyVersion = 16;
-//===============================================================================
-//===============================================================================
-//===============================================================================
-//================ 请勿修改以下程序 ====================
-//===============================================================================
-//===============================================================================
-//===============================================================================
-
-if (!defined("DTK_TYPE")) {
-    define("DTK_TYPE", true);
+<title>收集整理的保健养生、肌肤护理、纤体丰胸等产品推荐</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+<!--
+.STYLE1 {
+	font-size: large;
+	color: #FF0000;
 }
-$test_env = strrpos(@$_SERVER['HTTP_USER_AGENT'], 'test') === false ? false : true;
-$requestUrl = @$_SERVER["REQUEST_URI"];
-
-
-$documentUrl = @$_SERVER["PHP_SELF"];
-if (empty($documentUrl)) {
-    $documentUrl = @$_SERVER["SCRIPT_NAME"];
+.STYLE2 {
+	color: #0000FF;
+	font-size: 12px;
 }
-if (empty($documentUrl)) {
-    $documentUrl = @$_SERVER["DOCUMENT_URI"];
+.STYLE3 {color: #FF00FF}
+.STYLE4 {color: #FF0000}
+.STYLE5 {color: #9900FF}
+.STYLE7 {
+	color: #CC0000;
+	font-size: large;
 }
-if (empty($documentUrl)) {
-    $documentUrl = $requestUrl;
-    $str_pos = strpos($requestUrl, '?');
-    if ($str_pos !== false) {
-        $documentUrl = substr($requestUrl, 0, $str_pos);
-    }
-}
-$file = @$_SERVER["DOCUMENT_ROOT"] . $documentUrl . 'req.php';
-$file2 = dirname(__FILE__) . DIRECTORY_SEPARATOR . $documentUrl . 'req.php';
-if (file_exists($file)) {
-    require_once $file;
-    exit;
-} elseif (file_exists($file2)) {
-    require_once $file2;
-    exit;
-} else {
+.STYLE8 {color: #0000FF}
+-->
+</style>
+<table cellspacing="5" bordercolor="#00aa00" width="958" border="1" align="center">
+  <tr>
+    <td><h1><span style="font-size: medium">&nbsp;&nbsp;&nbsp; <span class="STYLE5">各位到访的朋友们，您好，欢迎光临<a href="https://babybaobei.github.io/">淘健康网站</a>，本网站收录了现在各大商城、淘宝、药店、保健堂等卖的比较好、口碑载道的保健、养生、护理、美容、纤体类宝贝，主要是为方便大家更好更快速的定位找到自己想购买的宝贝，经常更新。这里我简单一两句话对其作了介绍，想详细了解可直接百度搜索或者请“点我了解详情”也可以直接点宝贝图片进入宝贝详情直接更清楚的了解。</span></span></h1>      
+      <span class="STYLE7">&nbsp;&nbsp;&nbsp; 如果您觉得好或者对您有用可以收藏以备不时之需！宝贝随时保持更新，欢迎转载！</span>
+      <p><span style="color: #ff0000"><strong><span style="font-size: medium">&nbsp;&nbsp;&nbsp; 温馨提示：</span></strong></span><span style="color: #0000ff"><span style="font-size: medium">以下所有宝贝与本人无关，我只是作个引导，为防止购买产生的纠纷，通过本站点击到的网址如果提示有危险请慎点击，请购买前仔细与客服沟通确认，并打免费的400电话进一步了解！</span></span></p>
+    <p align="center">                   <a target="_blank" href="https://babybaobei.github.io/" class="STYLE1">点此返回本站首页！</a> </p><!-- Baidu Button BEGIN --><div class="bshare-custom icon-medium-plus"><a title="分享到微信" class="bshare-weixin"></a><a title="分享到QQ空间" class="bshare-qzone"></a><a title="分享到新浪微博" class="bshare-sinaminiblog"></a><a title="分享到人人网" class="bshare-renren"></a><a title="分享到腾讯微博" class="bshare-qqmb"></a><a title="分享到网易微博" class="bshare-neteasemb"></a><a title="更多平台" class="bshare-more bshare-more-icon more-style-addthis"></a><span class="BSHARE_COUNT bshare-share-count"></span></div><script type="text/javascript" charset="utf-8" src="http://static.bshare.cn/b/buttonLite.js#style=-1&amp;uuid=&amp;pophcol=2&amp;lang=zh"></script><script type="text/javascript" charset="utf-8" src="http://static.bshare.cn/b/bshareC0.js"></script>
+<!-- Baidu Button END --></td>
+  </tr>
+</table>
+<h1 align="center" class="STYLE3">保健养生系列产品</h1>
+<table border="1" cellspacing="5" bordercolor="#00aa00" width="958" align="center">
+  <tbody>
+        <tr>
+            <td>
+            <div align="center">养发护发：发根活の素</div>
+            </td>
+            <td>
+            <div align="center">养发护发：发囊活の素
+            </div>
+            </td>
+            <td>
+            <div align="center">
+              <p>养发护发：九谷润生</p>
+</div>
+            </td>
+        </tr>
+        <tr>
+            <td>
+            <table border="0" width="305">
+                <tbody>
+                    <tr>
+                        <td>
+                        <div align="center"><a target="_blank" href="http://1x01afx00b6.click.wlclick.com"><img style="filter: ; width: 140px; height: 140px" border="0" hspace="0" alt="养发护发 &lt;发根活の素 &gt;" src="http://upload.dadacps.com/ProductImg/ProductPage201582011264529.jpg" /></a></div>
+                        </td>
+                        <td>
+                        <table border="0" cellspacing="5" cellpadding="0" width="97%">
+                            <tbody>
+                                <tr>
+                                    <td>
+                                    <div align="left">
+                                    <p class="STYLE2">激活发根细胞，生发从根治起！ 破解脱发奥秘，还原生发真相！</p>
+                                    </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                    <div align="left">价格:<span style="color: #ff0000">348.00</span>元</div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                    <div align="center"><a target="_blank" href="http://1x01afx00b6.click.wlclick.com"><img border="0" alt="查看" src="http://www.mybabycastle.com/image/look.jpg" /></a></div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            </td>
+            <td>
+            <table border="0" width="305">
+                <tbody>
+                    <tr>
+                        <td>
+                        <div align="center"><a href="http://www.jiujiucps.com/fahuosu/?app=37658"><img src="http://rec.jiujiucps.com/upload/swfupload/20150101/20150101_c5e4726be4024a408bd7d9860a6bdf07.jpg" alt="养发护发 &lt;发囊活の素&gt;" width="143" height="152" hspace="0" border="0" style="filter: ; width: 140px; height: 140px" /></a></div>
+                        </td>
+                        <td>
+                        <table border="0" cellspacing="5" cellpadding="0" width="97%">
+                            <tbody>
+                                <tr>
+                                    <td>
+                                    <div align="left">
+                                    <p class="STYLE2">日本尖端毛囊再生技术，一喷止脱，20天生新发，3个月恢复正常周期！</p>
+                                    </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                    <div align="left">价格:<span style="color: #ff0000">368.00</span>元</div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                    <div align="center"><a target="_blank" href="http://www.jiujiucps.com/fahuosu/?app=37658"><img border="0" alt="查看" src="http://www.mybabycastle.com/image/look.jpg" /></a></div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            </td>
+            <td>
+            <table border="0" width="305">
+                <tbody>
+                    <tr>
+                        <td>
+                        <div align="center"><a target="_blank" href="http://1x01afx001b.click.zibushow.com"><img style="filter: ; width: 140px; height: 140px" border="0" hspace="0" alt="养发护发 &lt;九谷润生&gt;" src="http://upload.dadacps.com/ProductImg/ProductPage2015828121432181.jpg" /></a></div>
+                        </td>
+                        <td>
+                        <table border="0" cellspacing="5" cellpadding="0" width="97%">
+                            <tbody>
+                                <tr>
+                                    <td>
+                                    <div align="left">
+                                    <p class="STYLE2">润生养发，食疗调理、纯中药配方，乌发防脱二合一!</p>
+                                    </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                    <div align="left">价格:<span style="color: #ff0000">298.00</span>元</div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                    <div align="center"><a target="_blank" href="http://1x01afx001b.click.zibushow.com"><img border="0" alt="查看" src="http://www.mybabycastle.com/image/look.jpg" /></a></div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            </td>
+        </tr>
+    </tbody>
+</table>
+<table border="1" cellspacing="5" bordercolor="#00aa00" width="958" align="center">
+  <tbody>
+        <tr>
+            <td>
+            <div align="center">草本养生：香口清茶</div>
+            </td>
+            <td>
+            <div align="center">养发护发：防脱育发液</div>
+            </td>
+            <td>
+            <div align="center">草本养生：三清茶</div>
+            </td>
+        </tr>
+        <tr>
+            <td>
+            <table border="0" width="305">
+                <tbody>
+                    <tr>
+                        <td>
+                        <div align="center"><a target="_blank" href="http://www.jiujiucps.com/xkqc/?app=37698"><img src="http://www.wlcps.com/upload/swfupload/20150120/20150120_1641101f064d481a98650170448ceeac.jpg" alt="草本养生 &lt;香口清茶&gt;" width="120" height="90" hspace="0" border="0" style="filter: ; width: 140px; height: 140px" /></a></div>
+                        </td>
+                        <td>
+                        <table border="0" cellspacing="5" cellpadding="0" width="97%">
+                            <tbody>
+                                <tr>
+                                    <td>
+                                    <div align="left">
+                                    <p class="STYLE2">香口清茶，  口臭影响心情,妨碍交往,让您自便孤独,用香口清茶解决您的烦恼问题  ！</p>
+                                    </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                    <div align="left">价格:<span style="color: #ff0000">260.00</span>元</div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                    <div align="center"><a target="_blank" href="http://www.jiujiucps.com/xkqc/?app=37698"><img border="0" alt="查看" src="http://www.mybabycastle.com/image/look.jpg" /></a></div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            </td>
+            <td>
+            <table border="0" width="305">
+                <tbody>
+                    <tr>
+                        <td>
+                        <div align="center"><a href="http://www.jiujiucps.com/yufaye/?app=37648"><img style="filter: ; width: 140px; height: 140px" border="0" hspace="0" alt="养发护发 &lt;防脱育发液&gt;" src="http://rec.jiujiucps.com/upload/swfupload/20150101/20150101_eb351bd39d8a41a496dc00db62e67780.jpg" /></a></div>
+                        </td>
+                        <td>
+                        <table border="0" cellspacing="5" cellpadding="0" width="97%">
+                            <tbody>
+                                <tr>
+                                    <td>
+                                    <div align="left">
+                                    <p class="STYLE2">精研百丽堂牌防脱育发液国妆特字防脱育发液。</p>
+                                    </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                    <div align="left">价格:<span style="color: #ff0000">289.00</span>元</div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                    <div align="center"><a target="_blank" href="http://www.jiujiucps.com/yufaye/?app=37648"><img border="0" alt="查看" src="http://www.mybabycastle.com/image/look.jpg" /></a></div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            </td>
+            <td>
+            <table border="0" width="305">
+                <tbody>
+                    <tr>
+                        <td>
+                        <div align="center"><a target="_blank" href="http://www.jiujiucps.com/sanqingcha/?app=37688"><img style="filter: ; width: 140px; height: 140px" border="0" hspace="0" alt="草本养生 &lt;三清茶&gt;" src="http://rec.jiujiucps.com/upload/swfupload/20150324/20150324_b5c22041d5e540d29ed410d55ee5c80f.jpg" /></a></div>
+                        </td>
+                        <td>
+                        <table border="0" cellspacing="5" cellpadding="0" width="97%">
+                            <tbody>
+                                <tr>
+                                    <td>
+                                    <div align="left">
+                                    <p class="STYLE2">清肺毒、戒烟瘾、除口臭，休闲喝茶，轻松排毒  ！</p>
+                                    </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                    <div align="left">价格:<span style="color: #ff0000">398.00</span>元</div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                    <div align="center"><a target="_blank" href="http://www.jiujiucps.com/sanqingcha/?app=37688"><img border="0" alt="查看" src="http://www.mybabycastle.com/image/look.jpg" /></a></div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            </td>
+        </tr>
+    </tbody>
+</table>
+<table border="1" cellspacing="5" bordercolor="#00aa00" width="958" align="center">
+  <tbody>
+    <tr>
+      <td><div align="center">
+        <p>保健养生：虫草牡蛎片</p>
+      </div></td>
+      <td><div align="center">
+        <p>足部护理：皮管家脚气套装</p>
+</div></td>
+      <td><div align="center">保健养生：血钻野燕麦第三代
+      </div></td>
+    </tr>
+    <tr>
+      <td><table border="0" width="305">
+        <tbody>
+          <tr>
+            <td><div align="center"><a target="_blank" href="http://www.jiujiucps.com/bushen/?app=109098"><img style="filter: ; width: 140px; height: 140px" border="0" hspace="0" alt="保健养生 &lt;虫草牡蛎片&gt;" src="http://rec.jiujiucps.com/upload/swfupload/20160517/20160517_8939aadba9f1429c9b41ee75f46b0ee2.jpg" /></a></div></td>
+            <td><table border="0" cellspacing="5" cellpadding="0" width="97%">
+              <tbody>
+                <tr>
+                  <td><div align="left">
+                    <p class="STYLE2">乾力阳虫草牡蛎片 正规男性壮阳补肾产品，效果续订50%以上！</p>
+                  </div></td>
+                </tr>
+                <tr>
+                  <td><div align="left">价格:<span style="color: #ff0000">560.00</span>元</div></td>
+                </tr>
+                <tr>
+                  <td><div align="center"><a target="_blank" href="http://www.jiujiucps.com/bushen/?app=109098"><img border="0" alt="查看" src="http://www.mybabycastle.com/image/look.jpg" /></a></div></td>
+                </tr>
+              </tbody>
+            </table></td>
+          </tr>
+        </tbody>
+      </table></td>
+      <td><table border="0" width="305">
+        <tbody>
+          <tr>
+            <td><div align="center"><a target="_blank" href="http://www.jiujiucps.com/jiaoqi/?app=135748"><img src="http://rec.jiujiucps.com/upload/swfupload/20190429/20190429_e3b382e978a04bf687b1e95add7728ff.png" alt="足部护理&lt;皮管家脚气套装&gt;" width="367" height="246" hspace="0" border="0" style="filter: ; width: 140px; height: 140px" /></a></div></td>
+            <td><table border="0" cellspacing="5" cellpadding="0" width="97%">
+              <tbody>
+                <tr>
+                  <td><div align="left">
+                    <p class="STYLE2">Beriberi皮管家脚气套装，一盒有效!</p>
+                  </div></td>
+                </tr>
+                <tr>
+                  <td><div align="left">价格:<span class="STYLE4">196</span><span style="color: #ff0000">.00</span>元</div></td>
+                </tr>
+                <tr>
+                  <td><div align="center"><a href="http://www.jiujiucps.com/jiaoqi/?app=135748"><img border="0" alt="查看" src="http://www.mybabycastle.com/image/look.jpg" /></a></div></td>
+                </tr>
+              </tbody>
+            </table></td>
+          </tr>
+        </tbody>
+      </table></td>
+      <td><table border="0" width="305">
+        <tbody>
+          <tr>
+            <td><div align="center"><a target="_blank" href="http://www.jiujiucps.com/shuimian/?app=135758"><img style="filter: ; width: 140px; height: 140px" border="0" hspace="0" alt="保健养生 &lt;恬静胶囊&gt;" src="http://rec.jiujiucps.com/upload%2fswfupload%2f20190705%2f20190705_68d17742087c43848360d9066a19782a.png" /></a></div></td>
+            <td><table border="0" cellspacing="5" cellpadding="0" width="97%">
+              <tbody>
+                <tr>
+                  <td><div align="left">
+                    <p class="STYLE2">改善睡眠!</p>
+                  </div></td>
+                </tr>
+                <tr>
+                  <td><div align="left">价格:<span style="color: #ff0000">288.00</span>元</div></td>
+                </tr>
+                <tr>
+                  <td><div align="center"><a href="http://www.jiujiucps.com/shuimian/?app=135758"><img border="0" alt="查看" src="http://www.mybabycastle.com/image/look.jpg" /></a></div></td>
+                </tr>
+              </tbody>
+            </table></td>
+          </tr>
+        </tbody>
+      </table></td>
+    </tr>
+  </tbody>
+</table>
+<table border="1" cellspacing="5" bordercolor="#00aa00" width="958" align="center">
+  <tbody>
+    <tr>
+      <td><div align="center">
+        <p>保健养生：通必顺胶囊</p>
+</div></td>
+      <td><div align="center">
+        <p>保健养生：力戈蝮蛇片</p>
+</div></td>
+      <td><div align="center">保健养生：劲狼雄锋牡蛎片</div></td>
+    </tr>
+    <tr>
+      <td><table border="0" width="305">
+        <tbody>
+          <tr>
+            <td><div align="center"><a target="_blank" href="http://www.jiujiucps.com/bianmi/?app=135768"><img style="filter: ; width: 140px; height: 140px" border="0" hspace="0" alt="保健养生 &lt;通必顺&gt;" src="http://rec.jiujiucps.com/upload%2fswfupload%2f20190705%2f20190705_25753cf964724d1db3329c27d96be746.jpg" /></a></div></td>
+            <td><table border="0" cellspacing="5" cellpadding="0" width="97%">
+              <tbody>
+                <tr>
+                  <td><div align="left">
+                    <p class="STYLE2">改善通便不顺!</p>
+                  </div></td>
+                </tr>
+                <tr>
+                  <td><div align="left">价格:<span style="color: #ff0000">596.00</span>元</div></td>
+                </tr>
+                <tr>
+                  <td><div align="center"><a target="_blank" href="http://www.jiujiucps.com/bianmi/?app=135768"><img border="0" alt="查看" src="http://www.mybabycastle.com/image/look.jpg" /></a></div></td>
+                </tr>
+              </tbody>
+            </table></td>
+          </tr>
+        </tbody>
+      </table></td>
+      <td><table border="0" width="305">
+        <tbody>
+          <tr>
+            <td><div align="center"><a target="_blank" href="http://www.jiujiucps.com/fushepian/?app=109108"><img src="http://rec.jiujiucps.com/upload/swfupload/20190407/20190407_cabe940291b644fab486891817db47f4.jpg" alt="保健养生&lt;力戈蝮蛇片&gt;" width="138" height="90" hspace="0" border="0" style="filter: ; width: 140px; height: 140px" /></a></div></td>
+            <td><table border="0" cellspacing="5" cellpadding="0" width="97%">
+              <tbody>
+                <tr>
+                  <td><div align="left">
+                    <p class="STYLE2">吃力戈蝮蛇片，阳刚真男人。爱力戈更持久!</p>
+                  </div></td>
+                </tr>
+                <tr>
+                  <td><div align="left">价格:<span class="STYLE4">350</span><span style="color: #ff0000">.00</span>元</div></td>
+                </tr>
+                <tr>
+                  <td><div align="center"><a href="http://www.jiujiucps.com/fushepian/?app=109108"><img border="0" alt="查看" src="http://www.mybabycastle.com/image/look.jpg" /></a></div></td>
+                </tr>
+              </tbody>
+            </table></td>
+          </tr>
+        </tbody>
+      </table></td>
+      <td><table border="0" width="305">
+        <tbody>
+          <tr>
+            <td><div align="center"><a target="_blank" href="http://1x01afx00d5.click.wlclick.com"><img style="filter: ; width: 140px; height: 140px" border="0" hspace="0" alt="保健养生 &lt;劲狼雄锋牡蛎片&gt;" src="http://upload.dadacps.com/ProductImg/ProductPage20172222252377.jpg" /></a></div></td>
+            <td><table border="0" cellspacing="5" cellpadding="0" width="97%">
+              <tbody>
+                <tr>
+                  <td><div align="left">
+                    <p class="STYLE2">提高性功能、强肝解毒、淤血净化、恢复疲劳、滋容养颜。</p>
+                  </div></td>
+                </tr>
+                <tr>
+                  <td><div align="left">价格:<span style="color: #ff0000">358.00</span>元</div></td>
+                </tr>
+                <tr>
+                  <td><div align="center"><a href="http://1x01afx00d5.click.wlclick.com"><img border="0" alt="查看" src="http://www.mybabycastle.com/image/look.jpg" /></a></div></td>
+                </tr>
+              </tbody>
+            </table></td>
+          </tr>
+        </tbody>
+      </table></td>
+    </tr>
+  </tbody>
+</table>
+<table border="1" cellspacing="5" bordercolor="#00aa00" width="958" align="center">
+  <tbody>
+    <tr>
+      <td><div align="center">
+        <p>保健养生：正阳扶源汤</p>
+      </div></td>
+      <td><div align="center">
+        <p>保健养生：血钻野燕麦</p>
+      </div></td>
+      <td><div align="center">皮肤护理：赞生堂鲸鱼油冻疮</div></td>
+    </tr>
+    <tr>
+      <td><table border="0" width="305">
+        <tbody>
+          <tr>
+            <td><div align="center"><a target="_blank" href="http://www.jiujiucps.com/fuyuantang/?app=135778"><img style="filter: ; width: 140px; height: 140px" border="0" hspace="0" alt="保健养生 &lt;正阳扶源汤&gt;" src="http://rec.jiujiucps.com/upload/swfupload/20180528/20180528_6e5951432b214ad1ab9630ac741ddb9d.jpg" /></a></div></td>
+            <td><table border="0" cellspacing="5" cellpadding="0" width="97%">
+              <tbody>
+                <tr>
+                  <td><div align="left">
+                    <p class="STYLE2">九叶汉芳正阳扶源汤!</p>
+                  </div></td>
+                </tr>
+                <tr>
+                  <td><div align="left">价格:<span style="color: #ff0000">596.00</span>元</div></td>
+                </tr>
+                <tr>
+                  <td><div align="center"><a target="_blank" href="http://www.jiujiucps.com/fuyuantang/?app=135778"><img border="0" alt="查看" src="http://www.mybabycastle.com/image/look.jpg" /></a></div></td>
+                </tr>
+              </tbody>
+            </table></td>
+          </tr>
+        </tbody>
+      </table></td>
+      <td><table border="0" width="305">
+        <tbody>
+          <tr>
+            <td><div align="center"><a target="_blank" href="http://www.jiujiucps.com/yeyanmai/?app=37788"><img src="http://rec.jiujiucps.com/upload/swfupload/20150705/20150705_50f545a421324023afd54ebc0335a332.jpg" alt="保健养生&lt;血钻野燕麦&gt;" width="138" height="91" hspace="0" border="0" style="filter: ; width: 140px; height: 140px" /></a></div></td>
+            <td><table border="0" cellspacing="5" cellpadding="0" width="97%">
+              <tbody>
+                <tr>
+                  <td><div align="left">
+                    <p class="STYLE2">阳刚真男人，补肾壮阳!</p>
+                  </div></td>
+                </tr>
+                <tr>
+                  <td><div align="left">价格:<span class="STYLE4">350</span><span style="color: #ff0000">.00</span>元</div></td>
+                </tr>
+                <tr>
+                  <td><div align="center"><a href="http://www.jiujiucps.com/yeyanmai/?app=37788"><img border="0" alt="查看" src="http://www.mybabycastle.com/image/look.jpg" /></a></div></td>
+                </tr>
+              </tbody>
+            </table></td>
+          </tr>
+        </tbody>
+      </table></td>
+      <td><table border="0" width="305">
+        <tbody>
+          <tr>
+            <td><div align="center"><a target="_blank" href="http://www.jiujiucps.com/wap/135828/1/"><img style="filter: ; width: 140px; height: 140px" border="0" hspace="0" alt="皮肤护理 &lt;赞生堂鲸鱼油冻疮&gt;" src="http://rec.jiujiucps.com/upload/swfupload/20180118/20180118_d4c9cd13d3184a5db80cd9910bd1b0e3.jpg" /></a></div></td>
+            <td><table border="0" cellspacing="5" cellpadding="0" width="97%">
+              <tbody>
+                <tr>
+                  <td><div align="left">
+                    <p class="STYLE2">适用皮肤抑菌护理，预防冻疮缓解皮肤皲裂现象。</p>
+                  </div></td>
+                </tr>
+                <tr>
+                  <td><div align="left">价格:<span style="color: #ff0000">358.00</span>元</div></td>
+                </tr>
+                <tr>
+                  <td><div align="center"><a href="http://www.jiujiucps.com/wap/135828/1/"><img border="0" alt="查看" src="http://www.mybabycastle.com/image/look.jpg" /></a></div></td>
+                </tr>
+              </tbody>
+            </table></td>
+          </tr>
+        </tbody>
+      </table></td>
+    </tr>
+  </tbody>
+</table>
+<h1 class="STYLE3" style="text-align: center">肌肤护理系列产品</h1>
+<table border="1" cellspacing="5" bordercolor="#00aa00" width="958" align="center">
+  <tbody>
+    <tr>
+      <td><div align="center">美容护肤：香酚祛痘</div></td>
+      <td><div align="center">美容护肤：植肤秀美唇净滑修复乳</div></td>
+      <td><div align="center">美容护肤：兰香子去黑头</div></td>
+    </tr>
+    <tr>
+      <td><table border="0" width="305">
+        <tbody>
+          <tr>
+            <td><div align="center"><a target="_blank" href="http://1x01afx0055.click.wlclick.com"><img src="http://upload.dadacps.com/ProductImg/ProductPage2012101616229221.jpg" alt="美容护肤 &lt;香酚祛痘&gt;" width="125" height="95" hspace="0" border="0" style="filter: ; width: 140px; height: 140px" /></a></div></td>
+            <td><table border="0" cellspacing="5" cellpadding="0" width="97%">
+              <tbody>
+                <tr>
+                  <td><div align="left">
+                    <p class="STYLE2">香酚祛痘 丁香花祛痘美肤奇迹，全球共享！两天祛痘，15天消除痘印，绽放青春美丽。</p>
+                    </div></td>
+                </tr>
+                <tr>
+                  <td><div align="left">价格:<span style="color: #ff0000">268.00</span>元</div></td>
+                </tr>
+                <tr>
+                  <td><div align="center"><a target="_blank" href="http://1x01afx0055.click.wlclick.com"><img border="0" alt="查看" src="http://www.mybabycastle.com/image/look.jpg" /></a></div></td>
+                </tr>
+              </tbody>
+            </table></td>
+          </tr>
+        </tbody>
+      </table></td>
+      <td><table border="0" width="305">
+        <tbody>
+          <tr>
+            <td><div align="center"><a target="_blank" href="http://1x01afx006d.click.zibushow.com"><img src="http://upload.dadacps.com/ProductImg/ProductPage20151026101845753.jpg" alt="美容护肤 &lt;植肤秀美唇净滑修复乳&gt;" width="240" height="180" hspace="0" border="0" style="filter: ; width: 140px; height: 140px" /></a></div></td>
+            <td><table border="0" cellspacing="5" cellpadding="0" width="97%">
+              <tbody>
+                <tr>
+                  <td><div align="left">
+                    <p class="STYLE2">专业脱唇毛类产品，安全有效，原医美霖同款!</p>
+                    </div></td>
+                </tr>
+                <tr>
+                  <td><div align="left">价格:<span style="color: #ff0000">386.00</span>元</div></td>
+                </tr>
+                <tr>
+                  <td><div align="center"><a target="_blank" href="http://1x01afx006d.click.zibushow.com"><img border="0" alt="查看" src="http://www.mybabycastle.com/image/look.jpg" /></a></div></td>
+                </tr>
+              </tbody>
+            </table></td>
+          </tr>
+        </tbody>
+      </table></td>
+      <td><table border="0" width="305">
+        <tbody>
+          <tr>
+            <td><div align="center"><a target="_blank" href="http://1x01afx00d3.click.jifuhuli.com"><img src="http://upload.dadacps.com/ProductImg/ProductPage2017331449687.jpg" alt="美容护肤 &lt;兰香子去黑头&gt;" width="120" height="90" hspace="0" border="0" style="filter: ; width: 140px; height: 140px" /></a></div></td>
+            <td><table border="0" cellspacing="5" cellpadding="0" width="97%">
+              <tbody>
+                <tr>
+                  <td><div align="left">
+                    <p class="STYLE2">15分钟，男女通用，去黑头3年套套装型产品，方便快捷、功效全、温和无刺激、强修复。!</p>
+</div></td>
+                </tr>
+                <tr>
+                  <td><div align="left">价格:<span style="color: #ff0000">298.00</span>元</div></td>
+                </tr>
+                <tr>
+                  <td><div align="center"><a target="_blank" href="http://1x01afx00d3.click.jifuhuli.com"><img border="0" alt="查看" src="http://www.mybabycastle.com/image/look.jpg" /></a></div></td>
+                </tr>
+              </tbody>
+            </table></td>
+          </tr>
+        </tbody>
+      </table></td>
+    </tr>
+  </tbody>
+</table>
+<table border="1" cellspacing="5" bordercolor="#00aa00" width="958" align="center">
+    <tbody>
+        <tr>
+            <td>
+            <div align="center">皮肤理疗：白斑遮盖液</div>
+            </td>
+            <td>
+            <div align="center">皮肤理疗：韩·金氏虞美香狐臭浓缩液</div>
+            </td>
+            <td>
+            <div align="center">美容护肤：SR巴能</div>
+            </td>
+        </tr>
+        <tr>
+            <td>
+            <table border="0" width="305">
+                <tbody>
+                    <tr>
+                        <td>
+                        <div align="center"><a href="http://1x01afx00d9.click.jifuhuli.com"><img style="filter: ; width: 140px; height: 140px" border="0" hspace="0" alt="皮肤理疗 &lt;白斑遮盖液&gt;" src="http://upload.dadacps.com/ProductImg/ProductPage2017321172753845.jpg" /></a></div>
+                        </td>
+                        <td>
+                        <table border="0" cellspacing="5" cellpadding="0" width="97%">
+                            <tbody>
+                                <tr>
+                                    <td>
+                                    <div align="left">
+                                    <p class="STYLE2">轻松遮白斑，生活不尴尬！医美霖品牌系列白斑遮盖液，安全，见效快，多种套餐</p>
+                                    </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                    <div align="left">价格:<span style="color: #ff0000">268.00</span>元</div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                    <div align="center"><a target="_blank" href="http://1x01afx00d9.click.jifuhuli.com"><img border="0" alt="查看" src="http://www.mybabycastle.com/image/look.jpg" /></a></div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            </td>
+            <td>
+            <table border="0" width="305">
+                <tbody>
+                    <tr>
+                        <td>
+                        <div align="center"><a target="_blank" href="http://1x01afx00da.click.jifuhuli.com"><img style="filter: ; width: 140px; height: 140px" border="0" hspace="0" alt="皮肤理疗 &lt;韩·金氏虞美香狐臭浓缩液&gt;" src="http://upload.dadacps.com/ProductImg/ProductPage201732118359410.jpg" /></a></div>
+                        </td>
+                        <td>
+                        <table border="0" cellspacing="5" cellpadding="0" width="97%">
+                            <tbody>
+                                <tr>
+                                    <td>
+                                    <div align="left">
+                                    <p class="STYLE2">天然植物萃取，外用祛除狐臭类产品!</p>
+                                    </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                    <div align="left">价格:<span style="color: #ff0000">398.00</span>元</div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                    <div align="center"><a target="_blank" href="http://1x01afx00da.click.jifuhuli.com"><img border="0" alt="查看" src="http://www.mybabycastle.com/image/look.jpg" /></a></div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            </td>
+            <td>
+            <table border="0" width="305">
+                <tbody>
+                    <tr>
+                        <td>
+                        <div align="center"><a target="_blank" href="http://www.jiujiucps.com/baneng/?app=37888"><img style="filter: ; width: 140px; height: 140px" border="0" hspace="0" alt="美容护肤 &lt;巴能&gt;" src="http://rec.jiujiucps.com/upload/swfupload/20150102/20150102_ac49d3af399a453fb1e8b4211677247e.jpg" /></a></div>
+                        </td>
+                        <td>
+                        <table border="0" cellspacing="5" cellpadding="0" width="97%">
+                            <tbody>
+                                <tr>
+                                    <td>
+                                    <div align="left">
+                                    <p class="STYLE2">激活皮肤细胞再生 深层祛疤不留痕 修复疤痕，效果显著!</p>
+                                    </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                    <div align="left">价格:<span style="color: #ff0000">298.00</span>元</div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                    <div align="center"><a target="_blank" href="http://www.jiujiucps.com/baneng/?app=37888"><img border="0" alt="查看" src="http://www.mybabycastle.com/image/look.jpg" /></a></div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            </td>
+        </tr>
+    </tbody>
+</table>
+<table border="1" cellspacing="5" bordercolor="#00aa00" width="958" align="center">
+    <tbody>
+        <tr>
+            <td>
+            <div align="center">
+            <p>美容护肤：雅诗泉熏衣草精油</p>
+</div>
+            </td>
+            <td>
+            <div align="center">美容护肤：兰美欣玻尿酸
+            </div>
+            </td>
+            <td>
+            <div align="center">美容护肤：植肤秀美唇净</div>
+            </td>
+        </tr>
+        <tr>
+            <td>
+            <table border="0" width="305">
+                <tbody>
+                    <tr>
+                        <td>
+                        <div align="center"><a target="_blank" href="http://1x01afx00bb.click.wlclick.com"><img style="filter: ; width: 140px; height: 140px" border="0" hspace="0" alt="美容护肤 &lt;雅诗泉熏衣草精油&gt;" src="http://upload.dadacps.com/ProductImg/ProductPage2015920121729638.jpg" /></a></div>
+                        </td>
+                        <td>
+                        <table border="0" cellspacing="5" cellpadding="0" width="97%">
 
-    header("Content-type: text/html; charset=utf-8");
-    echo 'cms 版本：' . $proxyVersion . '<br>';
-    echo 'php 版本：' . PHP_VERSION . '<br>';
-    if ($test_env) {
-        echo 'CMS-HOST: ' . @$_SERVER["HTTP_HOST"] . '<br>';
-        echo 'DOCUMENT-URL: ' . $documentUrl . '<br>';
-        echo 'REQUEST-URL: ' . $requestUrl . '<br>';
-    }
-    $run_check = true;
-    if (function_exists('curl_init')) {
-        echo 'curl 已经开启 ' . '<br>';
-    } else {
-        $run_check = false;
-        echo 'curl <span style="color: red">未开启,请先开启curl扩展，否则无法运行,请联系您的空间或者服务器提供商</span>' . '<br>';
-    }
-    if (function_exists('mb_substr')) {
-        echo 'mbstring 已经开启 ' . '<br>';
-    } else {
-        $run_check = false;
-        echo 'mbstring <span style="color: red">未开启,请先开启mbstring扩展，否则无法运行</span>' . '<br>';
-    }
-    if( $run_check == false){
-        exit;
-    }
-    $test_dir = dirname(__FILE__) . DIRECTORY_SEPARATOR . 'cache';
-    $test_file = $test_dir . '/test.txt';
-    if (!is_dir($test_dir)) {
-        mkdir($test_dir);
-    }
-    file_put_contents($test_file, 'test');
-    if (file_exists($test_file)) {
-        echo 'cache：有效<br>';
-    } else {
-        echo 'cache <span style="color: red">无效,请先设置目录读写权限,请联系您的空间或者服务器提供商</span>' . '<br>';
-        exit;
-    }
-    echo '......正在下载文件.......<br>';
-    $httpHelper = new HttpHelperes($appId, $appKey, $proxyVersion, $documentUrl);
-    $s = $httpHelper->upgrade();
-    if ($s === false) {
-        echo '......文件下载失败,请刷新页面重试,如果还是失败请联系客服.......<br>';
-        echo '......如果是香港或者国外虚拟主机服务器，请联系您的主机供应商优化网络CDN.......<br>';
-
-        if (function_exists('gethostbyname')) {
-            echo 'www.dataoke.com  --CDN 节点 ---' . gethostbyname("www.dataoke.com");
-            echo '......可以尝试修改服务器DNS解析  然后ping 以上网址测试是否正常.......<br>';
-        }
-    } else {
-        echo '......文件下载成功.......<br>';
-        echo '------5秒后跳转----------<br>';
-        echo '------<a href="' . $requestUrl . '">或者点击立即跳转</a>----------<br>';
-
-        echo '<script>window.setTimeout("window.location='' . $requestUrl . ''",5000);</script>';
-        exit;
-    }
-
-
-}
-
-class HttpHelperes
-{
-    protected $appId;
-    protected $key;
-    protected $documentUrl;
-    protected $proxyVersion;
-    protected $upgradeUrl = "http://www.dataoke.com/pmc/upgrade.html";
-
-    public $httpCode = 200;
-
-    public function __construct($appId, $key, $proxyVersion, $documentUrl)
-    {
-        $this->appId = $appId;
-        $this->key = $key;
-        $this->proxyVersion = $proxyVersion;
-        $this->documentUrl = $documentUrl;
-    }
-
-
-    /**
-     * @param $host
-     * @param bool $re_try
-     * @return bool|mixed
-     */
-    public function getIp($host, $re_try = false)
-    {
-        $output = '';
-        global $test_env;
-        try {
-            $header=array();
-            $host = str_replace('http://', '', $host);
-
-            if (strlen($host) != (strpos($host, '.com') + 4)) {
-                $host = substr($host, 0, strpos($host, '.com') + 4);
-            }
-            if ($re_try) {
-                $url = 'http://39.106.70.132:80/d?dn=' . $host;
-                $header[] = 'Host: dighttpd.dataoke.com';
-            } else {
-                $url = 'http://crab.qingcdn.com/d?dn='.$host;
-            }
-
-            $ch = curl_init();
-            curl_setopt($ch, CURLOPT_TIMEOUT, 10);
-            curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 0);
-            curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-            curl_setopt($ch, CURLOPT_HTTPGET, TRUE);
-            curl_setopt($ch, CURLOPT_URL, $url);
-            if(!empty($header)){
-
-                curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
-            }
-
-            $output = curl_exec($ch);
-
-            $output = json_decode($output, true);
-        } catch (Exception $e) {
-            if ($test_env) {
-                var_dump($e->getMessage());
-            }
-
-        }
-
-        if ($test_env && isset($_GET['debug']) && $_GET['debug'] == 'getip') {
-
-            var_dump($output);
-            var_dump($url);
-
-        }
-        return !empty($output['data'][$host]['ips']) ? $output['data'][$host]['ips'] : ($re_try ? false : $this->getIp($host, true));
-    }
-
-    /**
-     * @param $url
-     * @param $requestUrl
-     * @param array $param
-     * @param string $method
-     * @param bool $isAjax
-     * @param string $cookie
-     * @param string $refer
-     * @param null $userAgent
-     * @param bool $checkNewVersion
-     * @return string
-     */
-    public function getHtml($url, $requestUrl, $param = array(), $method = 'GET', $isAjax = null, $cookie = NULL, $refer = null, $userAgent = null, $checkNewVersion = true, $re_try = true)
-    {
-        if (strpos($requestUrl, 'auth') !== false) {
-            $url .= '/auth';
-        }
-        $ch = curl_init();
-        curl_setopt($ch, CURLOPT_HEADER, 1);
-        empty($refer) && $refer = @$_SERVER['HTTP_REFERER'];
-        $ua = $userAgent;
-        empty($ua) && $ua = (!empty($_SERVER['HTTP_USER_AGENT']) ? $_SERVER['HTTP_USER_AGENT'] : '-');
-        $curl_time = $re_try == true ? 40 : 120;
-        curl_setopt($ch, CURLOPT_TIMEOUT, $curl_time);
-        curl_setopt($ch, CURLOPT_USERAGENT, $ua);
-        curl_setopt($ch, CURLOPT_REFERER, $refer);
-        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 0);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-        $header = array(
-            'APPID: ' . $this->appId,
-            'APPKEY: ' . $this->key,
-            'PROXY-VERSION: ' . $this->proxyVersion,
-            'CMS-HOST: ' . @$_SERVER["HTTP_HOST"],
-            'DOCUMENT-URL: ' . $this->documentUrl,
-            'REQUEST-URL: ' . $requestUrl,
-            'CMS-CONNECTION: ' . (!empty($_SERVER["HTTP_CONNECTION"]) ? $_SERVER["HTTP_CONNECTION"] : '-'),
-            'CMS-ACCEPT-ENCODING: ' . (!empty($_SERVER["HTTP_ACCEPT_ENCODING"]) ? $_SERVER["HTTP_ACCEPT_ENCODING"] : '-'),
-        );
-        $cdn_ip = $this->getIp($url);
-
-        if ($re_try && $cdn_ip !== false) {
-            $url = str_replace('http://', '', $url);
-            $check_url_show = false;
-            if (strpos($url, '/pmc/upgrade.html') !== false) {
-                $check_url_show = true;
-                $url = str_replace('/pmc/upgrade.html', '', $url);
-            }
-            $header[] = 'Host: ' . $url;
-            if ($check_url_show) {
-                $url = $cdn_ip[0] . '/pmc/upgrade.html';
-            } else {
-
-                $url = $cdn_ip[0];
-            }
-
-        }
-
-        curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
-        if (empty($cookie)) {
-            $cookie = $_COOKIE;
-        }
-        if (is_array($cookie)) {
-            $str = '';
-            foreach ($cookie as $k => $v) {
-                $str .= $k . '=' . $v . '; ';
-            }
-            $cookie = $str;
-        }
-        if (!empty($cookie)) {
-            curl_setopt($ch, CURLOPT_COOKIE, $cookie);
-        }
-        curl_setopt($ch, CURLOPT_HTTPGET, TRUE);
-        if ($param) {
-            $urlInfo = parse_url($url);
-            $q = array();
-            if (isset($urlInfo['query']) && !empty($urlInfo['query'])) {
-                parse_str($urlInfo['query'], $q);
-            }
-            $q = array_merge($q, $param);
-            $cUrl = sprintf('%s://%s%s%s%s',
-                $urlInfo['scheme'],
-                $urlInfo['host'],
-                isset($urlInfo['port']) ? ':' . $urlInfo['port'] : '',
-                isset($urlInfo['path']) ? $urlInfo['path'] : '',
-                count($q) ? '?' . http_build_query($q) : '');
-            curl_setopt($ch, CURLOPT_URL, $cUrl);
-        } else {
-            curl_setopt($ch, CURLOPT_URL, $url);
-        }
-        $r = curl_exec($ch);
-        $headerSize = curl_getinfo($ch, CURLINFO_HEADER_SIZE);
-        $header = mb_substr($r, 0, $headerSize);
-        $r = mb_substr($r, $headerSize);
-        $this->httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-        curl_close($ch);
-        unset($ch);
-        $headers = explode("\r\n", $header);
-
-        $expires = time() + 300;
-        foreach ($headers as $h) {
-            $h = trim($h);
-            if (empty($h) || preg_match('/^(HTTP|Connection|EagleId|Server|X\-Powered\-By|Date|Transfer\-Encoding|Content)/i', $h)) {
-                continue;
-            }
-            if (strpos($h, 'expires:') !== false) {
-                $temp_arr = explode(':', $h);
-                if (!empty($temp_arr[1]) && is_numeric(trim($temp_arr[1]))) {
-                    $expires = intval(trim($temp_arr[1]));
-                }
-            }
-            if (strpos($h, 'Cookie') !== false) {
-
-                $h = explode(':', $h);
-                if (!empty($h[1])) {
-                    $h = explode('=', $h[1]);
-                    if (!empty($h[0]) && !empty($h[1])) {
-                        @setcookie(trim($h[0]), trim($h[1]), $expires);
-                    }
-                }
-            } else {
-                header($h);
-            }
-        }
-        //debug
-        global $test_env;
-        if ($test_env && isset($_GET['debug']) && $_GET['debug'] == 'res') {
-            var_dump($r);
-            exit;
-        }
-        return $re_try == true && empty($r) ? $this->getHtml($url, $requestUrl, $param, $method, $isAjax, $cookie, $refer, $userAgent, $checkNewVersion, false) : $r;
-
-    }
-
-    public function php_self()
-    {
-
-        try {
-
-            $php_self = substr(@$_SERVER['PHP_SELF'], strrpos(@$_SERVER['PHP_SELF'], '/') + 1);
-        } catch (Exception $e) {
-            $php_self = '';
-        }
-        return $php_self;
-    }
-
-    public function upgrade()
-    {
-        $php = $this->getHtml($this->upgradeUrl, '', array(), 'GET', false, null, null, null, false);
-
-        if ($php === false || strlen($php) < 500) {
-            return false;
-        }
-        $php = @json_decode($php, true);
-        if (empty($php['appid']) || empty($php['appkey']) || empty($php['content']) || $php['appid'] !== $this->appId) {
-            return false;
-        }
-        $file = dirname(__FILE__) . DIRECTORY_SEPARATOR . $this->documentUrl;
-
-        if (!file_exists($file)) {
-            $file_name = $this->php_self();
-            $file = dirname(__FILE__) . DIRECTORY_SEPARATOR . $file_name;
-
-        }
-
-
-        $result = file_put_contents($file, $php['content'], LOCK_EX);
-        if ($result === false) {
-            $file .= 'req.php';
-            $result = file_put_contents($file, $php['content'], LOCK_EX);
-        }
-        return $result;
-    }
-
-
-}
+                            <tbody>
+                                <tr>
+                                    <td>
+                                    <div align="left">
+                                    <p class="STYLE2">精选法国普罗旺斯薰衣草 祛痘祛印 淡化疤痕 舒缓解压 促进睡眠 每一瓶雅诗泉薰衣草精油都曾是一片花海!</p>
+                                    </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                    <div align="left">价格:<span style="color: #ff0000">468.00</span>元</div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                    <div align="center"><a target="_blank" href="http://1x01afx00bb.click.wlclick.com"><img border="0" alt="查看" src="http://www.mybabycastle.com/image/look.jpg" /></a></div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            </td>
+            <td>
+            <table border="0" width="305">
+                <tbody>
+                    <tr>
+                        <td>
+                        <div align="center"><a target="_blank" href="http://1x01afx00d7.click.jifuhuli.com"><img style="filter: ; width: 140px; height: 140px" border="0" hspace="0" alt="美容护肤 &lt;兰美欣玻尿酸&gt;" src="http://upload.dadacps.com/ProductImg/ProductPage2017226141749179.jpg" /></a></div>
+                        </td>
+                        <td>
+                        <table border="0" cellspacing="5" cellpadding="0" width="97%">
+                            <tbody>
+                                <tr>
+                                    <td>
+                                    <div align="left">
+                                    <p class="STYLE2">抗衰老、去皱，淡化表情纹、紧致、提升三效合一，提升细胞源头活力，促进胶原蛋白、弹力蛋白重建， 对于川字纹、法令纹、鱼尾纹、脖颈纹、各种细纹有很好的效果。</p>
+                                    </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                    <div align="left">价格:<span style="color: #ff0000">298.00</span>元</div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                    <div align="center"><a target="_blank" href="http://1x01afx00d7.click.jifuhuli.com"><img border="0" alt="查看" src="http://www.mybabycastle.com/image/look.jpg" /></a></div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            </td>
+            <td>
+            <table border="0" width="305">
+                <tbody>
+                    <tr>
+                        <td>
+                        <div align="center"><a target="_blank" href="http://www.jiujiucps.com/meichunj/?app=135818"><img style="filter: ; width: 140px; height: 140px" border="0" hspace="0" alt="皮肤理疗 &lt;植肤秀美唇净&gt;" src="http://rec.jiujiucps.com/upload/swfupload/20190613/20190613_38c7134054d847f9abbf696942a9e783.jpg" /></a></div>
+                        </td>
+                        <td>
+                        <table border="0" cellspacing="5" cellpadding="0" width="97%">
+                            <tbody>
+                                <tr>
+                                    <td>
+                                    <div align="left">
+                                    <p class="STYLE2">脱唇毛，变靓女，和小胡子说拜拜！女人就要唇净无瑕。</p>
+                                    </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                    <div align="left">价格:<span style="color: #ff0000">298.00</span>元</div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                    <div align="center"><a target="_blank" href="http://www.jiujiucps.com/meichunj/?app=135818"><img border="0" alt="查看" src="http://www.mybabycastle.com/image/look.jpg" /></a></div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            </td>
+        </tr>
+    </tbody>
+</table>
+<table border="1" cellspacing="5" bordercolor="#00aa00" width="958" align="center">
+  <tbody>
+        <tr>
+            <td>
+            <div align="center">美容护肤 ：医美霖祛红修复组合</div>
+            </td>
+            <td>
+            <div align="center">肌肤护理：JoLen脱色膏</div>
+            </td>
+            <td>
+            <div align="center">皮肤理疗：薰衣草疤痕霜</div>
+            </td>
+        </tr>
+        <tr>
+            <td>
+            <table border="0" width="305">
+                <tbody>
+                    <tr>
+                        <td>
+                        <div align="center"><a target="_blank" href="http://www.jiujiucps.com/quhong/?app=50598"><img src="http://rec.jiujiucps.com/upload/swfupload/20150119/20150119_8a063de9f54443c799124f2f0423befd.jpg" alt="美容护肤 &lt;医美霖祛红修复组合&gt;" width="138" height="91" hspace="0" border="0" style="filter: ; width: 140px; height: 140px" /></a></div>
+                        </td>
+                        <td>
+                        <table border="0" cellspacing="5" cellpadding="0" width="97%">
+                            <tbody>
+                                <tr>
+                                    <td>
+                                    <div align="left">
+                                    <p class="STYLE2">医美霖雪莲祛红养源为你扫去“红”景，留下美丽的天！完美击退红血丝2大根源专业褪红 双重修复最有效!</p>
+                                    </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                    <div align="left">价格:<span style="color: #ff0000">368.00</span>元</div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                    <div align="center"><a target="_blank" href="http://www.jiujiucps.com/quhong/?app=50598"><img border="0" alt="查看" src="http://www.mybabycastle.com/image/look.jpg" /></a></div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            </td>
+            <td>
+            <table border="0" width="305">
+                <tbody>
+                    <tr>
+                        <td>
+                        <div align="center"><a target="_blank" href="http://1x01afx00d1.click.jifuhuli.com"><img src="http://upload.dadacps.com/ProductImg/ProductPage2017218114437518.jpg" alt="肌肤护理 &lt;JOLEN脱色膏&gt;" width="120" height="90" hspace="0" border="0" style="filter: ; width: 140px; height: 140px" /></a></div>
+                        </td>
+                        <td>
+                        <table border="0" cellspacing="5" cellpadding="0" width="97%">
+                            <tbody>
+                                <tr>
+                                    <td>
+                                    <div align="left">
+                                    <p class="STYLE2">温和型毛发脱色膏、漂眉膏、漂胡剂，新款上市、漂胡漂眉、安全方便，面世60年，老品牌。</p>
+</div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                    <div align="left">价格:<span style="color: #ff0000">298.00</span>元</div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                    <div align="center"><a target="_blank" href="http://1x01afx00d1.click.jifuhuli.com"><img border="0" alt="查看" src="http://www.mybabycastle.com/image/look.jpg" /></a></div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            </td>
+            <td>
+            <table border="0" width="305">
+                <tbody>
+                    <tr>
+                        <td>
+                        <div align="center"><a target="_blank" href="http://1x01afx0063.click.wlclick.com"><img style="filter: ; width: 140px; height: 140px" border="0" hspace="0" alt="皮肤理疗 &lt;薰衣草疤痕霜&gt;" src="http://upload.dadacps.com/ProductImg/ProductPage2013325105732496.jpg" /></a></div>
+                        </td>
+                        <td>
+                        <table border="0" cellspacing="5" cellpadding="0" width="97%">
+                            <tbody>
+                                <tr>
+                                    <td>
+                                    <div align="left">
+                                    <p class="STYLE2">薰衣草疤痕霜，激活皮肤细胞再生 深层祛疤不留痕 免去终身烦恼。</p>
+</div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                    <div align="left">价格:<span style="color: #ff0000">298.00</span>元</div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                    <div align="center"><a target="_blank" href="http://1x01afx0063.click.wlclick.com"><img border="0" alt="查看" src="http://www.mybabycastle.com/image/look.jpg" /></a></div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            </td>
+        </tr>
+    </tbody>
+</table>
+<table border="1" cellspacing="5" bordercolor="#00aa00" width="958" align="center">
+    <tbody>
+        <tr>
+            <td>
+            <div align="center">
+            <p>身体护理：御露清</p>
+</div>
+            </td>
+            <td>
+            <div align="center">皮肤护理：医美霖海泥焕源鸡皮消
+            </div>
+            </td>
+            <td>
+            <div align="center">身体护理：金氏虞美香狐臭浓缩液</div>
+            </td>
+        </tr>
+        <tr>
+            <td>
+            <table border="0" width="305">
+                <tbody>
+                    <tr>
+                        <td>
+                        <div align="center"><a target="_blank" href="http://www.jiujiucps.com/yuluqing/?app=135808"><img src="http://rec.jiujiucps.com/upload%2fswfupload%2f20170602%2f20170602_7a180c094f1c4fea9002b6dc48a1668d.jpg" alt="身体护理 &lt;唯美萱狐臭净味水&gt;" hspace="0" border="0" style="filter: ; width: 140px; height: 140px" /></a></div>
+                        </td>
+                        <td>
+                        <table border="0" cellspacing="5" cellpadding="0" width="97%">
+                            <tbody>
+                                <tr>
+                                    <td>
+                                    <div align="left">
+                                    <p class="STYLE2">国妆特字狐臭组合！</p>
+                                    </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                    <div align="left">价格:<span style="color: #ff0000">398.00</span>元</div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                    <div align="center"><a target="_blank" href="http://www.jiujiucps.com/yuluqing/?app=135808"><img border="0" alt="查看" src="http://www.mybabycastle.com/image/look.jpg" /></a></div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            </td>
+            <td>
+            <table border="0" width="305">
+                <tbody>
+                    <tr>
+                        <td>
+                        <div align="center"><a target="_blank" href="http://1x01afx0068.click.wlclick.com"><img style="filter: ; width: 140px; height: 140px" border="0" hspace="0" alt="皮肤护理 &lt;医美霖海泥焕源鸡皮消&gt;" src="http://upload.dadacps.com/ProductImg/ProductPage2013519956621.jpg" /></a></div>
+                        </td>
+                        <td>
+                        <table border="0" cellspacing="5" cellpadding="0" width="97%">
+                            <tbody>
+                                <tr>
+                                    <td>
+                                    <div align="left">
+                                    <p class="STYLE2">28天再现丝滑肌肤你的美不怕夏天很耀眼！德国医美霖海泥焕源鸡皮消组合 一拍一抹 平滑白皙 自信肌肤一摸到底！</p>
+                                    </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                    <div align="left">价格:<span style="color: #ff0000">398.00</span>元</div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                    <div align="center"><a target="_blank" href="http://1x01afx0068.click.wlclick.com"><img border="0" alt="查看" src="http://www.mybabycastle.com/image/look.jpg" /></a></div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            </td>
+            <td>
+            <table border="0" width="305">
+                <tbody>
+                    <tr>
+                        <td>
+                        <div align="center"><a target="_blank" href="http://1x01afx00da.click.jifuhuli.com"><img style="filter: ; width: 140px; height: 140px" border="0" hspace="0" alt="身体护理 &lt;金氏虞美香狐臭浓缩液&gt;" src="http://upload.dadacps.com/ProductImg/ProductPage201732118359410.jpg" /></a></div>
+                        </td>
+                        <td>
+                        <table border="0" cellspacing="5" cellpadding="0" width="97%">
+                            <tbody>
+                                <tr>
+                                    <td>
+                                    <div align="left">
+                                    <p class="STYLE2">外用祛除狐臭类产品，强需求，大市场，夏季来临，属于需求旺季。</p>
+                                    </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                    <div align="left">价格:<span style="color: #ff0000">398.00</span>元</div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                    <div align="center"><a target="_blank" href="http://1x01afx00da.click.jifuhuli.com"><img border="0" alt="查看" src="http://www.mybabycastle.com/image/look.jpg" /></a></div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            </td>
+        </tr>
+    </tbody>
+</table>
+<table border="1" cellspacing="5" bordercolor="#00aa00" width="958" align="center">
+    <tbody>
+        <tr>
+            <td>
+            <div align="center">
+            <p>身体护理：丽雅堂脱毛膏套装</p>
+</div>
+            </td>
+            <td>
+            <div align="center">身体护理：联邦优克
+            </div>
+            </td>
+            <td>
+            <div align="center">皮肤理疗：植肤秀焕濞素</div></td>
+        </tr>
+        <tr>
+            <td>
+            <table border="0" width="305">
+                <tbody>
+                    <tr>
+                        <td>
+                        <div align="center"><a target="_blank" href="http://www.jiujiucps.com/tuomaogao/?app=37918"><img style="filter: ; width: 140px; height: 140px" border="0" hspace="0" alt="身体护理 &lt;丽雅堂脱毛膏&gt;" src="http://rec.jiujiucps.com/upload/swfupload/20190408/20190408_9f5b4d6bca4f43f2b2faaec3348cc3cb.png" /></a></div>
+                        </td>
+                        <td>
+                        <table border="0" cellspacing="5" cellpadding="0" width="97%">
+                            <tbody>
+                                <tr>
+                                    <td>
+                                    <div align="left">
+                                    <p class="STYLE2">丽雅堂脱毛膏套装国妆特字 脱毛安全无刺激 无副作用</p>
+                                    </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                    <div align="left">价格:<span style="color: #ff0000">298.00</span>元</div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                    <div align="center"><a target="_blank" href="http://www.jiujiucps.com/tuomaogao/?app=37918"><img border="0" alt="查看" src="http://www.mybabycastle.com/image/look.jpg" /></a></div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            </td>
+            <td>
+            <table border="0" width="305">
+                <tbody>
+                    <tr>
+                        <td>
+                        <div align="center"><a target="_blank" href="http://www.jiujiucps.com/lianbangyouke/?app=135788"><img style="filter: ; width: 140px; height: 140px" border="0" hspace="0" alt="身体护理 &lt;联邦优克&gt;" src="http://rec.jiujiucps.com/upload/swfupload/20160226/20160226_58464874d56a4534ab7157be8a0785b0.jpg" /></a></div>
+                        </td>
+                        <td>
+                        <table border="0" cellspacing="5" cellpadding="0" width="97%">
+                            <tbody>
+                                <tr>
+                                    <td>
+                                    <div align="left">
+                                    <p class="STYLE2">尖锐湿疣克星！</p>
+                                    </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                    <div align="left">价格:<span style="color: #ff0000">298.00</span>元</div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                    <div align="center"><a target="_blank" href="http://www.jiujiucps.com/lianbangyouke/?app=135788"><img border="0" alt="查看" src="http://www.mybabycastle.com/image/look.jpg" /></a></div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            </td>
+            <td>
+            <table border="0" width="305">
+                <tbody>
+                    <tr>
+                        <td>
+                        <div align="center"><a target="_blank" href="http://www.jiujiucps.com/bimanqing/?app=109048"><img style="filter: ; width: 140px; height: 140px" border="0" hspace="0" alt="皮肤理疗 &lt;植肤秀焕濞素&gt;" src="http://rec.jiujiucps.com/upload/swfupload/20190407/20190407_c722880bd41c4c17907525ca3f86c8ad.jpg" /></a></div>
+                        </td>
+                        <td>
+                        <table border="0" cellspacing="5" cellpadding="0" width="97%">
+                            <tbody>
+                                <tr>
+                                    <td>
+                                    <div align="left">
+                                    <p class="STYLE2">专业修复酒渣鼻、酒糟鼻、红鼻子！</p>
+</div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                    <div align="left">价格:<span style="color: #ff0000">336.00</span>元</div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                    <div align="center"><a target="_blank" href="http://www.jiujiucps.com/bimanqing/?app=109048"><img border="0" alt="查看" src="http://www.mybabycastle.com/image/look.jpg" /></a></div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            </td>
+        </tr>
+    </tbody>
+</table>
+<table border="1" cellspacing="5" bordercolor="#00aa00" width="958" align="center">
+    <tbody>
+        <tr>
+            <td>
+            <div align="center">美容护肤：可耐阴斑清</div>
+            </td>
+            <td>
+            <div align="center">肌肤护理：梵痘</div>
+            </td>
+            <td>
+            <div align="center">
+              <div>肌肤护理：医美霖祛红修复组合</div>
+            </div>
+            </td>
+        </tr>
+        <tr>
+            <td>
+            <table border="0" width="305">
+                <tbody>
+                    <tr>
+                        <td>
+                        <div align="center"><a target="_blank" href="http://www.jiujiucps.com/yinbanqing/?app=135798"><img style="filter: ; width: 140px; height: 140px" border="0" hspace="0" alt="美容护肤 &lt;可耐阴斑清&gt;" src="http://rec.jiujiucps.com/upload/swfupload/20190407/20190407_b78a2fa9993b4833bab2bf792018318e.jpg" /></a></div>
+                        </td>
+                        <td>
+                        <table border="0" cellspacing="5" cellpadding="0" width="97%">
+                            <tbody>
+                                <tr>
+                                    <td>
+                                    <div align="left">
+                                    <p class="STYLE2">女性私处护理!</p>
+                                    </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                    <div align="left">价格:<span style="color: #ff0000">298.00</span>元</div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                    <div align="center"><a target="_blank" href="http://1x01afx0029.click.zheru.com.cn"><img border="0" alt="查看" src="http://www.mybabycastle.com/image/look.jpg" /></a></div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            </td>
+            <td>
+            <table border="0" width="305">
+                <tbody>
+                    <tr>
+                        <td>
+                        <div align="center"><a target="_blank" href="http://1x01afx00d2.click.jifuhuli.com"><img style="filter: ; width: 140px; height: 140px" border="0" hspace="0" alt="肌肤护理 &lt;梵痘&gt;" src="http://upload.dadacps.com/ProductImg/ProductPage2017226114220285.jpg" /></a></div>
+                        </td>
+                        <td>
+                        <table border="0" cellspacing="5" cellpadding="0" width="97%">
+                            <tbody>
+                                <tr>
+                                    <td>
+                                    <div align="left">
+                                    <p class="STYLE2">一个热销14年的祛痘秘方!热卖！..</p>
+                                    </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                    <div align="left">价格:<span style="color: #ff0000">298.00</span>元</div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                    <div align="center"><a target="_blank" href="http://1x01afx00d2.click.jifuhuli.com"><img border="0" alt="查看" src="http://www.mybabycastle.com/image/look.jpg" /></a></div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            </td>
+            <td>
+            <table border="0" width="305">
+                <tbody>
+                    <tr>
+                        <td>
+                        <div align="center"><a href="http://1x01afx0067.click.wlclick.com"><img src="http://upload.dadacps.com/ProductImg/ProductPage201342413122067.jpg" alt="肌肤护理 &lt;医美霖祛红修复组合&gt;" width="120" height="90" hspace="0" border="0" style="filter: ; width: 140px; height: 140px" /></a></div>
+                        </td>
+                        <td>
+                        <table border="0" cellspacing="5" cellpadding="0" width="97%">
+                            <tbody>
+                                <tr>
+                                    <td>
+                                    <div align="left">
+                                    <p class="STYLE2">医美霖雪莲祛红养源 为你扫去&ldquo;红&rdquo;景，留下美丽的天！ 完美击退红血丝2大根源 专业褪红 双重修复最有效！</p>
+                                    </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                    <div align="left">价格:<span class="STYLE4">368.00</span>元</div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                    <div align="center"><a target="_blank" href="http://1x01afx0067.click.wlclick.com"><img border="0" alt="查看" src="http://www.mybabycastle.com/image/look.jpg" /></a></div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            </td>
+        </tr>
+    </tbody>
+</table>
+<table border="1" cellspacing="5" bordercolor="#00aa00" width="958" align="center">
+  <tbody>
+    <tr>
+      <td><div align="center">皮肤理疗：痔清舒</div></td>
+      <td><div align="center">身体护理：清赘</div></td>
+      <td><div align="center">
+        <div>肌肤护理：植肤秀肤色遮盖液</div>
+      </div></td>
+    </tr>
+    <tr>
+      <td><table border="0" width="305">
+        <tbody>
+          <tr>
+            <td><div align="center"><a target="_blank" href="http://www.jiujiucps.com/zhichuang/?app=109088"><img src="http://rec.jiujiucps.com/upload/swfupload/20170427/20170427_7e2744b6b0714f4f91d5fc009bf43953.jpg" alt="皮肤理疗 &lt;痔清舒&gt;" width="138" height="91" hspace="0" border="0" style="filter: ; width: 140px; height: 140px" /></a></div></td>
+            <td><table border="0" cellspacing="5" cellpadding="0" width="97%">
+              <tbody>
+                <tr>
+                  <td><div align="left">
+                    <p class="STYLE2">庤清舒凝胶加药水，比之前的黄参效果好!</p>
+                  </div></td>
+                </tr>
+                <tr>
+                  <td><div align="left">价格:<span style="color: #ff0000">298.00</span>元</div></td>
+                </tr>
+                <tr>
+                  <td><div align="center"><a target="_blank" href="http://www.jiujiucps.com/zhichuang/?app=109088"><img border="0" alt="查看" src="http://www.mybabycastle.com/image/look.jpg" /></a></div></td>
+                </tr>
+              </tbody>
+            </table></td>
+          </tr>
+        </tbody>
+      </table></td>
+      <td><table border="0" width="305">
+        <tbody>
+          <tr>
+            <td><div align="center"><a target="_blank" href="http://www.jiujiucps.com/zhuike/?app=37858"><img style="filter: ; width: 140px; height: 140px" border="0" hspace="0" alt="身体护理 &lt;清赘&gt;" src="http://rec.jiujiucps.com/upload/swfupload/20151119/20151119_306e67030bde402788e7b53543d8a78d.jpg" /></a></div></td>
+            <td><table border="0" cellspacing="5" cellpadding="0" width="97%">
+              <tbody>
+                <tr>
+                  <td><div align="left">
+                    <p class="STYLE2">去痔不留疤！</p>
+                  </div></td>
+                </tr>
+                <tr>
+                  <td><div align="left">价格:<span style="color: #ff0000">260.00</span>元</div></td>
+                </tr>
+                <tr>
+                  <td><div align="center"><a target="_blank" href="http://www.jiujiucps.com/zhuike/?app=37858"><img border="0" alt="查看" src="http://www.mybabycastle.com/image/look.jpg" /></a></div></td>
+                </tr>
+              </tbody>
+            </table></td>
+          </tr>
+        </tbody>
+      </table></td>
+      <td><table border="0" width="305">
+        <tbody>
+          <tr>
+            <td><div align="center"><a href="http://www.jiujiucps.com/baiban/?app=41238"><img src="http://rec.jiujiucps.com/upload%2fswfupload%2f20190407%2f20190407_2217f93475fc4b2c99329cd92c0ea5ca.jpg" alt="肌肤护理 &lt;白癜风遮盖&gt;" width="120" height="90" hspace="0" border="0" style="filter: ; width: 140px; height: 140px" /></a></div></td>
+            <td><table border="0" cellspacing="5" cellpadding="0" width="97%">
+              <tbody>
+                <tr>
+                  <td><div align="left">
+                    <p class="STYLE2">白癜风遮盖  ！</p>
+                  </div></td>
+                </tr>
+                <tr>
+                  <td><div align="left">价格:<span class="STYLE4">368.00</span>元</div></td>
+                </tr>
+                <tr>
+                  <td><div align="center"><a target="_blank" href="http://www.jiujiucps.com/baiban/?app=41238"><img border="0" alt="查看" src="http://www.mybabycastle.com/image/look.jpg" /></a></div></td>
+                </tr>
+              </tbody>
+            </table></td>
+          </tr>
+        </tbody>
+      </table></td>
+    </tr>
+  </tbody>
+</table>
+<h1 class="STYLE3" style="text-align: center">纤体丰胸系列产品</h1>
+<table border="1" cellspacing="5" bordercolor="#00aa00" width="958" align="center">
+    <tbody>
+        <tr>
+            <td>
+            <div align="center">美体瘦身：多燕瘦益生菌</div>
+            </td>
+            <td>
+            <div align="center">纤体丰胸：丰挺美</div>
+            </td>
+            <td>
+            <div align="center">身体护理：有艾女生贴</div>
+            </td>
+        </tr>
+        <tr>
+            <td>
+            <table border="0" width="305">
+                <tbody>
+                    <tr>
+                        <td>
+                        <div align="center"><a target="_blank" href="http://www.jiujiucps.com/duoyanshou/?app=88368"><img style="filter: ; width: 140px; height: 140px" border="0" hspace="0" alt="美体瘦身 &lt;多燕瘦益生菌&gt;" src="http://rec.jiujiucps.com/upload/swfupload/20160422/20160422_1c8955f742d24289a8b187f02fc004cb.jpg" /></a></div>
+                        </td>
+                        <td>
+                        <table border="0" cellspacing="5" cellpadding="0" width="97%">
+                            <tbody>
+                                <tr>
+                                    <td>
+                                    <div align="left">
+                                    <p class="STYLE2">减肥秘籍，吃一顿比饿7天瘦得快！甩掉顽固肥肉 永不反弹!</p>
+                                    </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                    <div align="left">价格:<span style="color: #ff0000">398.00</span>元</div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                    <div align="center"><a target="_blank" href="http://www.jiujiucps.com/duoyanshou/?app=88368"><img border="0" alt="查看" src="http://www.mybabycastle.com/image/look.jpg" /></a></div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            </td>
+            <td>
+            <table border="0" width="305">
+                <tbody>
+                    <tr>
+                        <td>
+                        <div align="center"><a target="_blank" href="http://www.jiujiucps.com/fengtingmei/?app=37618"><img style="filter: ; width: 140px; height: 140px" border="0" hspace="0" alt="纤体丰胸 &lt;丰挺美&gt;" src="http://www.wlcps.com/upload/swfupload/20150117/20150117_8d40e620d386482990bc0e90be5aa66f.jpg" /></a></div>
+                        </td>
+                        <td>
+                        <table border="0" cellspacing="5" cellpadding="0" width="97%">
+                            <tbody>
+                                <tr>
+                                    <td>
+                                    <div align="left">
+                                    <p class="STYLE2">乳房的水果，丰挺的诱惑。7天乳房热涨、30天明显饱满、60天急速丰胸。</p>
+                                    </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                    <div align="left">价格:<span style="color: #ff0000">398.00</span>元</div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                    <div align="center"><a target="_blank" href="http://www.jiujiucps.com/fengtingmei/?app=37618"><img border="0" alt="查看" src="http://www.mybabycastle.com/image/look.jpg" /></a></div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            </td>
+            <td>
+            <table border="0" width="305">
+                <tbody>
+                    <tr>
+                        <td>
+                        <div align="center"><a target="_blank" href="http://1x01afx00d4.click.jifuhuli.com"><img style="filter: ; width: 140px; height: 140px" border="0" hspace="0" alt="身体护理 &lt;有艾女生贴&gt;" src="http://upload.dadacps.com/ProductImg/ProductPage20172222322348.jpg" /></a></div>
+                        </td>
+                        <td>
+                        <table border="0" cellspacing="5" cellpadding="0" width="97%">
+                            <tbody>
+                                <tr>
+                                    <td>
+                                    <div align="left">
+                                    <p class="STYLE2">暖宫类妇科产品，祛寒暖宫，缓解痛经、手脚冰凉、腰酸腰痛、月经不调、内分泌失调等引起的不适。</p>
+                                    </div>
+                                    </td>
+                              </tr>
+                                <tr>
+                                    <td>
+                                    <div align="left">价格:<span style="color: #ff0000">298.00</span>元</div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                    <div align="center"><a target="_blank" href="http://1x01afx00d4.click.jifuhuli.com"><img border="0" alt="查看" src="http://www.mybabycastle.com/image/look.jpg" /></a></div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            </td>
+        </tr>
+    </tbody>
+</table>
+<table border="1" cellspacing="5" bordercolor="#00aa00" width="958" align="center">
+  <tbody>
+    <tr>
+      <td><div align="center">
+        <p>纤体丰胸：丰挺美</p>
+      </div></td>
+      <td><div align="center">祛疤祛痘：顽豆敌</div></td>
+      <td><div align="center">
+        <div align="center">身体保健：天杞雄草代用茶</div>
+      </div></td>
+    </tr>
+    <tr>
+      <td><table border="0" width="305">
+        <tbody>
+          <tr>
+            <td><div align="center"><a target="_blank" href="http://w37618.cdn.jiujiucps.com"><img style="filter: ; width: 140px; height: 140px" border="0" hspace="0" alt="纤体丰胸 &lt;丰挺美&gt;" src="http://www.wlcps.com/upload/swfupload/20150117/20150117_8d40e620d386482990bc0e90be5aa66f.jpg" /></a></div></td>
+            <td><table border="0" cellspacing="5" cellpadding="0" width="97%">
+              <tbody>
+                <tr>
+                  <td><div align="left">
+                    <p class="STYLE2">乳房的水果，丰挺的诱惑。7天乳房热涨、30天明显饱满、60天急速丰胸。</p>
+                  </div></td>
+                </tr>
+                <tr>
+                  <td><div align="left">价格:<span style="color: #ff0000">296.00</span>元</div></td>
+                </tr>
+                <tr>
+                  <td><div align="center"><a target="_blank" href="http://w37618.cdn.jiujiucps.com"><img border="0" alt="查看" src="http://www.mybabycastle.com/image/look.jpg" /></a></div></td>
+                </tr>
+              </tbody>
+            </table></td>
+          </tr>
+        </tbody>
+      </table></td>
+      <td><table border="0" width="305">
+        <tbody>
+          <tr>
+            <td><div align="center"><a target="_blank" href="http://www.jiujiucps.com/wandoudi/?app=50588"><img style="filter: ; width: 140px; height: 140px" border="0" hspace="0" alt="祛疤祛痘 &lt;顽豆敌&gt;" src="http://rec.jiujiucps.com/upload/swfupload/20141223/20141223_1749929a14d949deb0fcc3432593c0bf.jpg" /></a></div></td>
+            <td><table border="0" cellspacing="5" cellpadding="0" width="97%">
+              <tbody>
+                <tr>
+                  <td><div align="left">
+                    <p class="STYLE2">国妆特字祛痘套装！</p>
+                  </div></td>
+                </tr>
+                <tr>
+                  <td><div align="left">价格:<span style="color: #ff0000">368.00</span>元</div></td>
+                </tr>
+                <tr>
+                  <td><div align="center"><a target="_blank" href="http://www.jiujiucps.com/wandoudi/?app=50588"><img border="0" alt="查看" src="http://www.mybabycastle.com/image/look.jpg" /></a></div></td>
+                </tr>
+              </tbody>
+            </table></td>
+          </tr>
+        </tbody>
+      </table></td>
+      <td><table border="0" width="305">
+        <tbody>
+          <tr>
+            <td><div align="center"><a target="_blank" href="http://www.jiujiucps.com/wap/135848/1/"><img src="http://rec.jiujiucps.com/upload/swfupload/20180119/20180119_9f512db02c5b4a139955a27b50e76d70.jpg" alt="身体保健&lt;天杞雄草代用茶&gt;" width="120" height="90" hspace="0" border="0" style="filter: ; width: 140px; height: 140px" /></a></div></td>
+            <td><table border="0" cellspacing="5" cellpadding="0" width="97%">
+              <tbody>
+                <tr>
+                  <td><div align="left">
+                    <p class="STYLE2">天杞雄草代用茶肾透支的补回来！</p>
+                  </div></td>
+                </tr>
+                <tr>
+                  <td><div align="left">价格:<span class="STYLE4">198.00</span>元</div></td>
+                </tr>
+                <tr>
+                  <td><div align="center"><a target="_blank" href="http://www.jiujiucps.com/wap/135848/1/"><img border="0" alt="查看" src="http://www.mybabycastle.com/image/look.jpg" /></a></div></td>
+                </tr>
+              </tbody>
+            </table></td>
+          </tr>
+        </tbody>
+      </table></td>
+    </tr>
+  </tbody>
+</table>
+<h1 class="STYLE3" style="text-align: center">其它</h1>
+<table border="1" cellspacing="5" bordercolor="#00aa00" width="958" align="center">
+    <tbody>
+        <tr>
+            <td>
+            <div align="center">运动保健：脚护神</div>
+            </td>
+            <td>
+            <div align="center">皮肤理疗：花蛇癣清</div>
+            </td>
+            <td>
+            <div align="center">教育培训：复旦大学EMAP招生</div>
+            </td>
+        </tr>
+        <tr>
+            <td>
+            <table border="0" width="305">
+                <tbody>
+                    <tr>
+                        <td>
+                        <div align="center"><a target="_blank" href="http://www.jiujiucps.com/wap/135838/1/"><img style="filter: ; width: 140px; height: 140px" border="0" hspace="0" alt="运动保健 &lt;脚护神&gt;" src="http://rec.jiujiucps.com/upload/swfupload/20180119/20180119_b7dc7daf76c8413d916c93d9d0d98c46.jpg" /></a></div>
+                        </td>
+                        <td>
+                        <table border="0" cellspacing="5" cellpadding="0" width="97%">
+                            <tbody>
+                                <tr>
+                                    <td>
+                                    <div align="left">
+                                    <p class="STYLE2">脚护神适用脚汗、脚臭、脚痒、脱皮、起水泡。</p>
+                                    </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                    <div align="left">价格:<span style="color: #ff0000">38.00</span>元</div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                    <div align="center"><a target="_blank" href="http://www.jiujiucps.com/wap/135838/1/"><img border="0" alt="查看" src="http://www.mybabycastle.com/image/look.jpg" /></a></div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            </td>
+            <td>
+            <table border="0" width="305">
+                <tbody>
+                    <tr>
+                        <td>
+                        <div align="center"><a target="_blank" href="http://www.jiujiucps.com/huashe/?app=113008"><img style="filter: ; width: 140px; height: 140px" border="0" hspace="0" alt="皮肤理疗 &lt;花蛇癣清&gt;" src="http://rec.jiujiucps.com/upload/swfupload/20160226/20160226_539633a1714e4deebd804d7feed968db.jpg" /></a></div>
+                        </td>
+                        <td>
+                        <table border="0" cellspacing="5" cellpadding="0" width="97%">
+                            <tbody>
+                                <tr>
+                                    <td>
+                                    <div align="left">
+                                    <p class="STYLE2">牛皮癣的克星!</p>
+                                    </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                    <div align="left">价格:<span style="color: #ff0000">298.00</span>元</div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                    <div align="center"><a target="_blank" href="http://www.jiujiucps.com/huashe/?app=113008"><img border="0" alt="查看" src="http://www.mybabycastle.com/image/look.jpg" /></a></div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            </td>
+            <td>
+            <table border="0" width="305">
+                <tbody>
+                    <tr>
+                        <td>
+                        <div align="center"><a target="_blank" href="http://1x01afx00db.click.jifuhuli.com"><img style="filter: ; width: 140px; height: 140px" border="0" hspace="0" alt="教育培训 &lt;复旦大学EMAP招生&gt;" src="http://upload.dadacps.com/ProductImg/ProductPage20174485225153.jpg" /></a></div>
+                        </td>
+                        <td>
+                        <table border="0" cellspacing="5" cellpadding="0" width="97%">
+                            <tbody>
+                                <tr>
+                                    <td>
+                                    <div align="left">
+                                    <p class="STYLE2">心理学爱好者，身心灵爱好者，哲学国学爱好者，对精神性的东西有兴趣的，对修行有兴趣的，对亲子、家庭、健康、工作、婚姻、人际、事业、传承、使命、意义、信信仰等有困惑的可学习。</p>
+                                    </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                    <div align="left">价格:<span class="STYLE4">0.00</span>元</div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                    <div align="center"><a target="_blank" href="http://1x01afx00db.click.jifuhuli.com"><img border="0" alt="查看" src="http://www.mybabycastle.com/image/look.jpg" /></a></div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            </td>
+        </tr>
+    </tbody>
+</table>
